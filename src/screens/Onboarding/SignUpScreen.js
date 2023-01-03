@@ -1,6 +1,8 @@
 import "react-native-gesture-handler";
 import React from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
+
+import { defaultContainer } from "../../styles/styles";
 
 import { Button, Text, TextInput } from "react-native-paper";
 
@@ -35,7 +37,7 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View>
       <TextInput
         label="email"
         mode="outlined"
@@ -59,4 +61,12 @@ const SignUpScreen = ({ navigation }) => {
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    ...defaultContainer
+  }
+});
+
 export default SignUpScreen;
+
+
