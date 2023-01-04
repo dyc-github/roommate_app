@@ -197,7 +197,14 @@ export default function App() {
             <Drawer.Screen
               name="ChatRoomList"
               component={ChatRoomListScreen}
-              options={{ title: "Messages" }}
+              options={{ 
+                title: "Messages", 
+                headerRight: () => (
+                  <IconButton
+                    icon="plus"
+                  />
+                )
+              }}
             />
             <Stack.Screen
               name="PrimaryScreen"
