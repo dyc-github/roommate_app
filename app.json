@@ -24,6 +24,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "softwareKeyboardLayoutMode": "pan",
+      "androidNavigationBar": {
+        "backgroundColor":"#00000000"
       }
     },
     "web": {
