@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 
-export default function ChatRoomListScreen({ navigation }) {
+ export default function ChatRoomListScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>ChatRoomList Screen</Text>
