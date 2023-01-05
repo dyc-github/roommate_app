@@ -35,8 +35,6 @@ import LoadingScreen from "./src/screens/LoadingScreen";
 
 import UserContext from "./src/context/user-context";
 
-import {changeBarColors} from 'react-native-immersive-bars';
-
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -172,8 +170,6 @@ export default function App() {
       this.user = user;
     },
   };
-
-  changeBarColors(true, '#50000000', 'transparent');
 
   return (
     <UserContext.Provider value={userState}>
