@@ -1,13 +1,8 @@
 import "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import React from "react";
 
-import {
-  Provider as PaperProvider,
-  MD3LightTheme,
-  MD3DarkTheme,
-  adaptNavigationTheme,
-  IconButton,
-} from "react-native-paper";
+import merge from "deepmerge";
 
 import {
   NavigationContainer,
@@ -18,7 +13,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import merge from "deepmerge";
+import {
+  Provider as PaperProvider,
+  MD3LightTheme,
+  MD3DarkTheme,
+  adaptNavigationTheme,
+  IconButton,
+} from "react-native-paper";
 
 import WelcomeScreen from "./src/screens/Onboarding/WelcomeScreen";
 import SignUpScreen from "./src/screens/Onboarding/SignUpScreen";
@@ -33,6 +34,7 @@ import ChatRoomListScreen from "./src/screens/Chat/ChatRoomListScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
 
 import UserContext from "./src/context/user-context";
+
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -171,42 +173,44 @@ export default function App() {
 
   return (
     <UserContext.Provider value={userState}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer theme={theme}>
-          <Stack.Navigator
-            initialRouteName="WelcomeScreen"
-            screenOptions={{
-              animation: "slide_from_right",
-              headerTitleAlign: "center",
-            }}
-          >
-            <Stack.Screen
-              name="LoadingScreen"
-              component={LoadingScreen}
-              options={{
-                headerShown: false,
-                presentation: "transparentModal",
-                animation: "fade",
+      <SafeAreaProvider>
+        <PaperProvider theme={theme}>
+          <NavigationContainer theme={theme}>
+            <Stack.Navigator
+              initialRouteName="WelcomeScreen"
+              screenOptions={{
+                animation: "slide_from_right",
+                headerTitleAlign: "center",
               }}
-            />
-            <Stack.Group screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-              <Stack.Screen name="LoginScreen" component={LoginScreen} />
-              <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-            </Stack.Group>
-            <Drawer.Screen
-              name="ChatRoomList"
-              component={ChatRoomListScreen}
-              options={{ title: "Messages" }}
-            />
-            <Stack.Screen
-              name="PrimaryScreen"
-              component={DrawerContainer}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
+            >
+              <Stack.Screen
+                name="LoadingScreen"
+                component={LoadingScreen}
+                options={{
+                  headerShown: false,
+                  presentation: "transparentModal",
+                  animation: "fade",
+                }}
+              />
+              <Stack.Group screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+                <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+              </Stack.Group>
+              <Drawer.Screen
+                name="ChatRoomList"
+                component={ChatRoomListScreen}
+                options={{ title: "Messages" }}
+              />
+              <Stack.Screen
+                name="PrimaryScreen"
+                component={DrawerContainer}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PaperProvider>
+      </SafeAreaProvider>
     </UserContext.Provider>
   );
 }
