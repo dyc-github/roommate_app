@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: "row",
-
   },
   upperSection: {
     flex: 2,
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
     ...defaultSection,
   },
-  titleStyle:{
+  titleStyle: {
     marginVertical: spacing.m,
   },
   buttonStyle: {

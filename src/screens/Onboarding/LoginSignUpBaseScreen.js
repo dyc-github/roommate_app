@@ -12,28 +12,27 @@ const LoginSignUpBaseScreen = (props) => {
   const [errorText, setErrorText] = React.useState();
 
   const callRegisterFunction = () => {
-    props.registerFunction(email, password)
-      .catch((error) => {
-        let errorMessage = "";
-        switch (error.code) {
-          case AuthErrorCodes.INVALID_EMAIL:
-            errorMessage = "*Email is invalid.";
-            break;
-          case AuthErrorCodes.EMAIL_EXISTS:
-            errorMessage = "*An account with this email already exists.";
-            break;
-          case AuthErrorCodes.INVALID_PASSWORD:
-            errorMessage = "*Password is invalid.";
-            break;
-          case AuthErrorCodes.USER_DELETED:
-            errorMessage = "*User not found.";
-            break;
-          default:
-            errorMessage = "*Something went wrong.";
-            console.log(error.code);
-        }
-        setErrorText(errorMessage);
-      });
+    props.registerFunction(email, password).catch((error) => {
+      let errorMessage = "";
+      switch (error.code) {
+        case AuthErrorCodes.INVALID_EMAIL:
+          errorMessage = "*Email is invalid.";
+          break;
+        case AuthErrorCodes.EMAIL_EXISTS:
+          errorMessage = "*An account with this email already exists.";
+          break;
+        case AuthErrorCodes.INVALID_PASSWORD:
+          errorMessage = "*Password is invalid.";
+          break;
+        case AuthErrorCodes.USER_DELETED:
+          errorMessage = "*User not found.";
+          break;
+        default:
+          errorMessage = "*Something went wrong.";
+          console.log(error.code);
+      }
+      setErrorText(errorMessage);
+    });
   };
 
   const theme = useTheme();
@@ -67,7 +66,7 @@ const LoginSignUpBaseScreen = (props) => {
           secureTextEntry={true}
           style={[styles.textInput, styles.marginVerticalXS]}
         ></TextInput>
-        <Text style={{color: theme.colors.error}}>{errorText}</Text>
+        <Text style={{ color: theme.colors.error }}>{errorText}</Text>
         <Button
           style={styles.marginVerticalM}
           mode="contained"

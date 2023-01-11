@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import React, { useContext } from "react";
+import React from "react";
 
 import merge from "deepmerge";
 
@@ -182,7 +182,6 @@ export default function App() {
     }),
     [toggleTheme, isThemeDark]
   );
-
 
   const initialUserConfig = {
     user,

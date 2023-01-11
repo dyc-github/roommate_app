@@ -7,7 +7,7 @@ import LoginSignUpBaseScreen from "./LoginSignUpBaseScreen";
 import UserContext from "../../context/user-context";
 
 const LoginScreen = ({ navigation }) => {
-  const {user, setUser} = React.useContext(UserContext);
+  const { user, setUser } = React.useContext(UserContext);
   const login = (email, password) => {
     navigation.navigate("LoadingScreen");
     return new Promise((resolve, reject) => {
