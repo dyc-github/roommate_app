@@ -11,27 +11,29 @@ const LoginSignUpBaseScreen = (props) => {
   const [password, setPassword] = React.useState("");
   const [errorText, setErrorText] = React.useState();
 
-  setErrorMessage = (errorCode) => {
-    let errorMessage = "";
-    switch (errorCode) {
-      case AuthErrorCodes.INVALID_EMAIL:
-        errorMessage = "Email is invalid.";
-        break;
-      case AuthErrorCodes.EMAIL_EXISTS:
-        errorMessage = "An account with this email already exists.";
-        break;
-      case AuthErrorCodes.INVALID_PASSWORD:
-        errorMessage = "Password is invalid.";
-        break;
-      default:
-        errorMessage = "Something went wrong.";
-        console.log(error.message);
-    }
-    setErrorText(errorMessage);
-  };
-
   const callRegisterFunction = () => {
-    props.registerFunction(email, password, setErrorMessage);
+    props.registerFunction(email, password)
+      .catch((error) => {
+        let errorMessage = "";
+        switch (error.code) {
+          case AuthErrorCodes.INVALID_EMAIL:
+            errorMessage = "*Email is invalid.";
+            break;
+          case AuthErrorCodes.EMAIL_EXISTS:
+            errorMessage = "*An account with this email already exists.";
+            break;
+          case AuthErrorCodes.INVALID_PASSWORD:
+            errorMessage = "*Password is invalid.";
+            break;
+          case AuthErrorCodes.USER_DELETED:
+            errorMessage = "*User not found.";
+            break;
+          default:
+            errorMessage = "*Something went wrong.";
+            console.log(error.code);
+        }
+        setErrorText(errorMessage);
+      });
   };
 
   const theme = useTheme();
@@ -51,6 +53,7 @@ const LoginSignUpBaseScreen = (props) => {
         <TextInput
           label="Email"
           mode="outlined"
+          autoCapitalize="none"
           value={email}
           onChangeText={(email) => setEmail(email)}
           style={[styles.textInput, styles.marginVerticalXS]}
@@ -58,12 +61,13 @@ const LoginSignUpBaseScreen = (props) => {
         <TextInput
           label="Password"
           mode="outlined"
+          autoCapitalize="none"
           value={password}
           onChangeText={(password) => setPassword(password)}
           secureTextEntry={true}
           style={[styles.textInput, styles.marginVerticalXS]}
         ></TextInput>
-        <Text>{errorText}</Text>
+        <Text style={{color: theme.colors.error}}>{errorText}</Text>
         <Button
           style={styles.marginVerticalM}
           mode="contained"

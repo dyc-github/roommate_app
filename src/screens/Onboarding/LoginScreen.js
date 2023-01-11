@@ -2,27 +2,26 @@ import React from "react";
 
 import auth from "../../firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import UserContext from "../../context/user-context";
 
 import LoginSignUpBaseScreen from "./LoginSignUpBaseScreen";
+import UserContext from "../../context/user-context";
 
 const LoginScreen = ({ navigation }) => {
-  const setUser = React.useContext(UserContext).setUser;
-
-  const login = (email, password, setErrorMessage) => {
+  const {user, setUser} = React.useContext(UserContext);
+  const login = (email, password) => {
     navigation.navigate("LoadingScreen");
-    return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        setUser(user);
-        navigation.pop();
-        navigation.navigate("PrimaryScreen");
-      })
-      .catch((error) => {
-        navigation.pop();
-        setErrorMessage(error.code);
-      });
+    return new Promise((resolve, reject) => {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          navigation.pop();
+          setUser(userCredential.user);
+          resolve();
+        })
+        .catch((error) => {
+          navigation.pop();
+          reject(error);
+        });
+    });
   };
 
   return <LoginSignUpBaseScreen text="Login" registerFunction={login} />;

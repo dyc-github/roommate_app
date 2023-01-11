@@ -10,6 +10,12 @@ export const spacing = {
     xl: 50,
 }
 
+export const avatarSizes = {
+    s: 32, 
+    m: 48, 
+    l: 64,
+}
+
 export const defaultContainer = {
     flex: 1,
 }
@@ -18,4 +24,3 @@ export const defaultSection = {
     justifyContent: "center",
     alignItems: "center",
 }
-

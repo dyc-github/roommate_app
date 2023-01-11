@@ -8,20 +8,20 @@ import LoginSignUpBaseScreen from "./LoginSignUpBaseScreen";
 const SignUpScreen = ({ navigation }) => {
   const setUser = React.useContext(UserContext).setUser;
 
-  const signUp = (email, password, setErrorMessage) => {
+  const signUp = (email, password) => {
     navigation.navigate("LoadingScreen");
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        setUser(user);
-        navigation.pop();
-        navigation.navigate("PrimaryScreen");
-      })
-      .catch((error) => {
-        navigation.pop();
-        setErrorMessage(error.code);
-      });
+    return new Promise((resolve, reject) => {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          navigation.pop();
+          setUser(userCredential.user);
+          resolve();
+        })
+        .catch((error) => {
+          navigation.pop();
+          reject(error);
+        });
+    });
   };
 
   return <LoginSignUpBaseScreen text="Sign up" registerFunction={signUp} />;
