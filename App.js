@@ -30,6 +30,7 @@ import TodoScreen from "./src/screens/Todo/TodoScreen";
 import CalendarScreen from "./src/screens/Calendar/CalendarScreen";
 
 import ChatRoomListScreen from "./src/screens/Chat/ChatRoomListScreen";
+import ChatScreen from "./src/screens/Chat/ChatScreen";
 
 import LoadingScreen from "./src/screens/LoadingScreen";
 
@@ -201,6 +202,14 @@ export default function App() {
                 name="ChatRoomList"
                 component={ChatRoomListScreen}
                 options={{ title: "Messages" }}
+              />
+              <Stack.Screen 
+                name="Chat"
+                component={ChatScreen}
+                options={({route}) => ({
+                  title: route.params.userName,
+                  headerBackTitleVisible: false,
+                })}
               />
               <Stack.Screen
                 name="PrimaryScreen"
