@@ -21,13 +21,15 @@ import {
   IconButton,
 } from "react-native-paper";
 
-import WelcomeScreen from "./src/screens/Onboarding/WelcomeScreen";
-import SignUpScreen from "./src/screens/Onboarding/SignUpScreen";
-import LoginScreen from "./src/screens/Onboarding/LoginScreen";
+import HomeDrawer from "./src/components/drawer_components/HomeDrawer";
+
+import WelcomeScreen from "./src/screens/onboarding/WelcomeScreen";
+import SignUpScreen from "./src/screens/onboarding/SignUpScreen";
+import LoginScreen from "./src/screens/onboarding/LoginScreen";
 
 import HomeScreen from "./src/screens/HomeScreen";
-import TodoScreen from "./src/screens/Todo/TodoScreen";
-import CalendarScreen from "./src/screens/Calendar/CalendarScreen";
+import TodoScreen from "./src/screens/todo/TodoScreen";
+import CalendarScreen from "./src/screens/calendar/CalendarScreen";
 
 import ChatRoomListScreen from "./src/screens/Chat/ChatRoomListScreen";
 import ChatScreen from "./src/screens/Chat/ChatScreen";
@@ -35,7 +37,7 @@ import ChatScreen from "./src/screens/Chat/ChatScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
 
 import UserContext from "./src/context/user-context";
-
+import { ThemeContext } from "./src/context/theme-context";
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -79,7 +81,10 @@ const Tab = createBottomTabNavigator();
 
 function DrawerContainer() {
   return (
-    <Drawer.Navigator screenOptions={{ headerShown: false }}>
+    <Drawer.Navigator
+      drawerContent={HomeDrawer}
+      screenOptions={{ headerShown: false }}
+    >
       <Drawer.Screen name="Root" component={TabContainer} />
     </Drawer.Navigator>
   );
@@ -162,64 +167,95 @@ function TabContainer({ navigation }) {
 }
 
 export default function App() {
+  const [user, setUser] = React.useState(null);
   const [isThemeDark, setIsThemeDark] = React.useState(false);
+
   let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
-  const userState = {
-    user: null,
-    setUser: (user) => {
-      this.user = user;
-    },
+  const toggleTheme = React.useCallback(() => {
+    return setIsThemeDark(!isThemeDark);
+  }, [isThemeDark]);
+
+  const initialThemeConfig = React.useMemo(
+    () => ({
+      toggleTheme,
+      isThemeDark,
+    }),
+    [toggleTheme, isThemeDark]
+  );
+
+  const initialUserConfig = {
+    user,
+    setUser,
   };
 
   return (
-    <UserContext.Provider value={userState}>
-      <SafeAreaProvider>
-        <PaperProvider theme={theme}>
-          <NavigationContainer theme={theme}>
-            <Stack.Navigator
-              initialRouteName="WelcomeScreen"
-              screenOptions={{
-                animation: "slide_from_right",
-                headerTitleAlign: "center",
-              }}
-            >
-              <Stack.Screen
-                name="LoadingScreen"
-                component={LoadingScreen}
-                options={{
-                  headerShown: false,
-                  presentation: "transparentModal",
-                  animation: "fade",
+    <UserContext.Provider value={initialUserConfig}>
+      <ThemeContext.Provider value={initialThemeConfig}>
+        <SafeAreaProvider>
+          <PaperProvider theme={theme}>
+            <NavigationContainer theme={theme}>
+              <Stack.Navigator
+                initialRouteName={"WelcomeScreen"}
+                screenOptions={{
+                  animation: "slide_from_right",
+                  headerTitleAlign: "center",
                 }}
-              />
-              <Stack.Group screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-                <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-              </Stack.Group>
-              <Drawer.Screen
-                name="ChatRoomList"
-                component={ChatRoomListScreen}
-                options={{ title: "Messages" }}
-              />
-              <Stack.Screen 
-                name="Chat"
-                component={ChatScreen}
-                options={({route}) => ({
-                  title: route.params.userName,
-                  headerBackTitleVisible: false,
-                })}
-              />
-              <Stack.Screen
-                name="PrimaryScreen"
-                component={DrawerContainer}
-                options={{ headerShown: false }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </PaperProvider>
-      </SafeAreaProvider>
+              >
+                {user == null ? (
+                  <>
+                    <Stack.Group screenOptions={{ headerShown: false }}>
+                      <Stack.Screen
+                        name="WelcomeScreen"
+                        component={WelcomeScreen}
+                      />
+                      <Stack.Screen
+                        name="LoginScreen"
+                        component={LoginScreen}
+                      />
+                      <Stack.Screen
+                        name="SignUpScreen"
+                        component={SignUpScreen}
+                      />
+                    </Stack.Group>
+                    <Stack.Screen
+                      name="LoadingScreen"
+                      component={LoadingScreen}
+                      options={{
+                        headerShown: false,
+                        presentation: "transparentModal",
+                        animation: "fade",
+                      }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Stack.Screen
+                      name="PrimaryScreen"
+                      component={DrawerContainer}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="ChatRoomList"
+                      component={ChatRoomListScreen}
+                      options={{ title: "Messages" }}
+                    />
+                    <Stack.Screen
+                      name="LoadingScreen"
+                      component={LoadingScreen}
+                      options={{
+                        headerShown: false,
+                        presentation: "transparentModal",
+                        animation: "fade",
+                      }}
+                    />
+                  </>
+                )}
+              </Stack.Navigator>
+            </NavigationContainer>
+          </PaperProvider>
+        </SafeAreaProvider>
+      </ThemeContext.Provider>
     </UserContext.Provider>
   );
 }
