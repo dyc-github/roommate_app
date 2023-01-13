@@ -31,7 +31,8 @@ import HomeScreen from "./src/screens/HomeScreen";
 import TodoScreen from "./src/screens/todo/TodoScreen";
 import CalendarScreen from "./src/screens/calendar/CalendarScreen";
 
-import ChatRoomListScreen from "./src/screens/chat/ChatRoomListScreen";
+import ChatRoomListScreen from "./src/screens/Chat/ChatRoomListScreen";
+import ChatScreen from "./src/screens/Chat/ChatScreen";
 
 import LoadingScreen from "./src/screens/LoadingScreen";
 
