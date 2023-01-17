@@ -31,13 +31,15 @@ import HomeScreen from "./src/screens/HomeScreen";
 import TodoScreen from "./src/screens/todo/TodoScreen";
 import CalendarScreen from "./src/screens/calendar/CalendarScreen";
 
-import ChatRoomListScreen from "./src/screens/Chat/ChatRoomListScreen";
-import ChatScreen from "./src/screens/Chat/ChatScreen";
+import ChatRoomListScreen from "./src/screens/chat/ChatRoomListScreen";
+import ChatScreen from "./src/screens/chat/ChatScreen";
 
 import LoadingScreen from "./src/screens/LoadingScreen";
 
 import UserContext from "./src/context/user-context";
 import { ThemeContext } from "./src/context/theme-context";
+import { RotateInUpLeft } from "react-native-reanimated";
+import { RotationGestureHandler } from "react-native-gesture-handler";
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -240,6 +242,14 @@ export default function App() {
                       component={ChatRoomListScreen}
                       options={{ title: "Messages" }}
                     />
+                    <Stack.Screen 
+                      name='Chat'
+                      component={ChatScreen}
+                      options={({route}) => ({
+                        title: route.params.userName,
+                        headerBackTitleVisible: false
+                      })}
+                      />
                     <Stack.Screen
                       name="LoadingScreen"
                       component={LoadingScreen}
